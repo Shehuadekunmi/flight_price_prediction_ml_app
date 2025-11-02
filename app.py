@@ -2,9 +2,17 @@ import streamlit as st
 import pickle
 import pandas as pd
 import datetime
+import os
 
 # Load model
-model = pickle.load(open(r"C:\Users\DELL 7480\udemy\Flight_Price_Prediction\flight_rf.pkl", "rb"))
+# model = pickle.load(open('flight_rf.pkl', 'rb'))
+# Get current directory
+current_dir = os.path.dirname(os.path.abspath(__file__))
+model_path = os.path.join(current_dir, "flight_rf.pkl")
+
+# Load model safely
+with open(model_path, "rb") as file:
+    model = pickle.load(file)
 
 # Streamlit Page Config
 st.set_page_config(page_title="Flight Price Prediction", page_icon="✈️", layout="wide")
