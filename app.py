@@ -4,7 +4,7 @@ import pandas as pd
 import datetime
 
 # Load model
-model = pickle.load(open('flight_rf.pkl', 'rb'))
+model = pickle.load(open(r"C:\Users\DELL 7480\udemy\Flight_Price_Prediction\flight_rf.pkl", "rb"))
 
 # Streamlit Page Config
 st.set_page_config(page_title="Flight Price Prediction", page_icon="✈️", layout="wide")
