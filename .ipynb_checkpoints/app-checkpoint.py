@@ -1,18 +1,28 @@
 import streamlit as st
 import pickle
+import joblib
 import pandas as pd
 import datetime
 import os
 
 # Load model
 # model = pickle.load(open('flight_rf.pkl', 'rb'))
-# Get current directory
-current_dir = os.path.dirname(os.path.abspath(__file__))
-model_path = os.path.join(current_dir, "flight_rf.pkl")
+# model = joblib.load(open('flight_rf.joblib', 'rb'))
+@st.cache_resource
+def load_model():
+    model_path = "flight_rf.joblib"
+    if not os.path.exists(model_path):
+        st.error(f"Model file not found: {model_path}")
+        return None
+    try:
+        model = joblib.load(model_path)
+        st.success("✅ Model loaded successfully!")
+        return model
+    except Exception as e:
+        st.error(f"❌ Failed to load model: {e}")
+        return None
 
-# Load model safely
-with open(model_path, "rb") as file:
-    model = pickle.load(file)
+model = load_model()
 
 # Streamlit Page Config
 st.set_page_config(page_title="Flight Price Prediction", page_icon="✈️", layout="wide")
@@ -142,3 +152,16 @@ if st.button('Predict Flight Price 💰'):
     output = round(prediction[0], 2)
     st.success(f"Estimated Flight Price: $ {output}")
     st.balloons()
+
+
+
+# --- Footer with Credit ---
+st.markdown(
+    """
+    <hr style="border: 0.5px solid #ddd; margin-top: 40px;"/>
+    <div style="text-align:center; color:white; font-size:14px; margin-top:10px;">
+        Built with ❤️ by <b>Shehu Adekunmi</b> | Powered by <b>Streamlit</b> 🚀
+    </div>
+    """,
+    unsafe_allow_html=True
+)
